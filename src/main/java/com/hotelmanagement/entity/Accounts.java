@@ -36,7 +36,7 @@ public class Accounts {
     @JoinColumn(name = "user_id", referencedColumnName = "id", insertable = false, updatable = false)
     User user;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
         name = "account_roles",
         joinColumns = @JoinColumn(name = "account_id"),

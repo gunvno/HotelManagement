@@ -199,7 +199,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
     private String generateToken(Accounts accounts){
         JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
-
+        
         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
                 .subject(accounts.getUsername())
                 .issuer("devteria.com")
@@ -223,13 +223,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new RuntimeException(e);
         }
     }
+    @Transactional
     private String buildScope(Accounts accounts){
         StringJoiner stringJoiner = new StringJoiner(" ");
+        Set<Roles> role = accounts.getRoles();
         if(!CollectionUtils.isEmpty(accounts.getRoles()))
-            accounts.getRoles().forEach(role -> {
-                stringJoiner.add("ROLE_" + role.getName());
-                if(!CollectionUtils.isEmpty(role.getPermissions()))
-                    role.getPermissions().forEach(permission -> {
+
+            accounts.getRoles().forEach(roles -> {
+                stringJoiner.add("ROLE_" + roles.getName());
+                if(!CollectionUtils.isEmpty(roles.getPermissions()))
+                    roles.getPermissions().forEach(permission -> {
                         stringJoiner.add(permission.getModule());
                     });
             });

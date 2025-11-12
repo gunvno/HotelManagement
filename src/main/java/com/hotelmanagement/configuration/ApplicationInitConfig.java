@@ -17,6 +17,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.Set;
+
 @Configuration
 @Slf4j
 public class ApplicationInitConfig {
@@ -30,7 +32,10 @@ public class ApplicationInitConfig {
     public ApplicationRunner applicationRunner(AccountRepository accountRepository, PasswordEncoder passwordEncoder,
                                                UserRepository userRepository, RoleRepository roleRepository) {
         return args -> {
-            if(roleRepository.findByName(Role.CUSTOMER).getPermissions().isEmpty()){
+            Roles adminRole = roleRepository.findByName(Role.ADMIN);
+            Roles customerRole = roleRepository.findByName(Role.CUSTOMER);
+
+            if(customerRole == null){
                 Roles roles = Roles.builder()
                         .name(Role.CUSTOMER)
                         .roleCode("abc")
@@ -45,7 +50,21 @@ public class ApplicationInitConfig {
                         .build();
                 roleRepository.save(roles);
             }
-            if(roleRepository.findByName(Role.ADMIN).getPermissions().isEmpty()){
+
+
+            if (accountRepository.findByUsername("admin").isEmpty()) {
+                User user = User.builder()
+                        .userType("ADMIN")
+                        .firstName("System")
+                        .lastName("Administrator")
+                        .status(true)
+                        .createdTime(LocalDateTime.now())
+                        .deleted(false)
+                        .build();
+                userRepository.save(user);
+
+                // 3️⃣ Gán role admin
+                Set<Roles> adminRoles = new HashSet<>();
                 Roles roles = Roles.builder()
                         .name(Role.ADMIN)
                         .roleCode("def")
@@ -58,25 +77,20 @@ public class ApplicationInitConfig {
                         .deletedTime(null)
                         .deletedBy(null)
                         .build();
-                roleRepository.save(roles);
-            }
+                adminRoles.add(roles);
 
-            if (accountRepository.findByUsername("admin").isEmpty()) {
-                var roles = new HashSet<String>();
-                roles.add(Role.ADMIN.name());
-                User user = User.builder()
-                        .userType("Admin")
-                        .build();
-                userRepository.save(user);
-                Accounts accounts = Accounts.builder()
+                Accounts adminAccount = Accounts.builder()
                         .username("admin")
                         .password(passwordEncoder.encode("admin"))
+                        .roles(adminRoles)
                         .userId(user.getId())
                         .status(true)
-                        //.roles(roles)
+                        .createdTime(LocalDateTime.now())
+                        .deleted(false)
                         .build();
-                accountRepository.save(accounts);
-                log.warn("admin user has been created with default password : admin, please change it");
+
+                accountRepository.save(adminAccount); // ✅ Hibernate sẽ insert account_roles ở đây
+                log.warn("✅ Admin account created with default password 'admin'.");
             }
         };
     }

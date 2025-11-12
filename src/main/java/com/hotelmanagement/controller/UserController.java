@@ -22,7 +22,14 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserService userService;
-
+    @GetMapping
+    ApiResponse<List<UserResponse>> getAll(){
+          return  ApiResponse.<List<UserResponse>>builder()
+                .code(1000)
+                .success("true")
+                .result(userService.getAllUser())
+                .build();
+    }
 
 
 

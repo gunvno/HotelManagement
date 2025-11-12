@@ -11,7 +11,6 @@ import org.mapstruct.MappingTarget;
 import java.security.Permission;
 @Mapper(componentModel = "spring")
 public interface RoleMapper {
-    @Mapping(target = "permissions", ignore = true)
     Roles toRole(RoleCreationRequest request);
     RoleResponse toRoleResponse(Roles role);
     void updatePermission(@MappingTarget Permission permission , UserUpdateRequest request);

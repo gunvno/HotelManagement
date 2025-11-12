@@ -2,10 +2,7 @@ package com.hotelmanagement.entity;
 
 import com.hotelmanagement.enums.Role;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
@@ -16,6 +13,8 @@ import java.util.Set;
 @Getter
 @Setter
 @Builder
+@Data
+@NoArgsConstructor @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Roles {
 
@@ -51,7 +50,7 @@ public class Roles {
     @Column(name = "deleted_by", length = 100)
     String deletedBy;
     
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "roles_permissions",
         joinColumns = @JoinColumn(name = "role_id"),

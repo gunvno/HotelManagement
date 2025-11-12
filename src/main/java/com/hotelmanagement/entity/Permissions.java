@@ -46,6 +46,6 @@ public class Permissions {
 
     @Column(name = "deleted_by", length = 100)
     String deletedBy;
-    @ManyToMany(mappedBy = "permissions")
+    @ManyToMany(fetch = FetchType.EAGER)
     Set<Roles> roles;
 }

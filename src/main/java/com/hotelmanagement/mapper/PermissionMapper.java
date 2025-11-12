@@ -10,7 +10,5 @@ import java.security.Permission;
 
 @Mapper(componentModel = "spring")
 public interface PermissionMapper {
-    Permission toPermission(PermissionCreationRequest request);
-    PermissionResponse toPermissionResponse(Permission permission);
-    void updatePermission(@MappingTarget Permission permission , UserUpdateRequest request);
+
 }
