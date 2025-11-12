@@ -1,6 +1,7 @@
 package com.hotelmanagement.dto.request.Authentication;
 
 import com.hotelmanagement.entity.Roles;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -12,7 +13,9 @@ import java.util.Set;
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RegisterRequest {
+    @NotNull(message = "USERNAME_NOT_NULL")
     String username;
+    @NotNull(message = "PASSWORD_NOT_NULL")
     String password;
     String userId;
     String firstName;

@@ -9,5 +9,5 @@ import com.hotelmanagement.entity.User;
 import java.util.List;
 
 public interface UserService {
-    public String register(RegisterRequest request);
+    public List<UserResponse> getAllUser();
 }

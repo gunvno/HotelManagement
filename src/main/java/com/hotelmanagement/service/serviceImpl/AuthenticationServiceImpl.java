@@ -1,16 +1,18 @@
 package com.hotelmanagement.service.serviceImpl;
 
+import com.hotelmanagement.dto.request.Authentication.*;
 import com.hotelmanagement.entity.Accounts;
+import com.hotelmanagement.entity.Roles;
+import com.hotelmanagement.entity.User;
+import com.hotelmanagement.enums.Role;
 import com.hotelmanagement.repository.AccountRepository;
+import com.hotelmanagement.repository.RoleRepository;
+import com.hotelmanagement.repository.UserRepository;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
-import com.hotelmanagement.dto.request.Authentication.AuthenticationRequest;
-import com.hotelmanagement.dto.request.Authentication.IntrospectRequest;
-import com.hotelmanagement.dto.request.Authentication.LogoutRequest;
-import com.hotelmanagement.dto.request.Authentication.RefreshTokenRequest;
 import com.hotelmanagement.dto.response.Authentication.AuthenticationResponse;
 import com.hotelmanagement.dto.response.Authentication.IntrospectResponse;
 import com.hotelmanagement.entity.InvalidatedToken;
@@ -23,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,10 +35,9 @@ import org.springframework.util.CollectionUtils;
 
 import java.text.ParseException;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
-import java.util.StringJoiner;
-import java.util.UUID;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -55,6 +57,54 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     protected long REFRESHABLE_DURATION;
 
 
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private RoleRepository roleRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Override
+    public String register(RegisterRequest request){
+        if(accountRepository.existsByUsername(request.getUsername()))
+            throw new AppException(ErrorCode.USER_IS_EXISTED);
+
+        User user = User.builder()
+                .userType("CUSTOMER")
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
+                .email(request.getEmail())
+                .phoneNumber(request.getPhoneNumber())
+                .status(true)
+                .createdTime(LocalDateTime.now())
+                .createdBy(null)
+                .modifiedTime(null)
+                .modifiedBy(null)
+                .deleted(false)
+                .deletedTime(null)
+                .deletedBy(null)
+                .build();
+        userRepository.save(user);
+        Roles customerRole = roleRepository.findByName(Role.CUSTOMER);
+        Set<Roles> roles = new HashSet<>();
+        roles.add(customerRole);
+        Accounts accounts = Accounts.builder()
+                .username(request.getUsername())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .status(true)
+                .userId(user.getId())
+                .roles(roles)
+                .createdTime(LocalDateTime.now())
+                .createdBy(null)
+                .modifiedTime(null)
+                .modifiedBy(null)
+                .deleted(false)
+                .deletedTime(null)
+                .deletedBy(null)
+                .build();
+
+        accountRepository.save(accounts);
+        return "Dang ki thanh cong";
+    }
 
     public IntrospectResponse introspect(IntrospectRequest request) throws JOSEException, ParseException {
         var token = request.getToken();

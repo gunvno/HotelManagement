@@ -1,14 +1,12 @@
 package com.hotelmanagement.controller;
 
+import com.hotelmanagement.dto.request.Authentication.*;
 import com.nimbusds.jose.JOSEException;
-import com.hotelmanagement.dto.request.Authentication.AuthenticationRequest;
-import com.hotelmanagement.dto.request.Authentication.IntrospectRequest;
-import com.hotelmanagement.dto.request.Authentication.LogoutRequest;
-import com.hotelmanagement.dto.request.Authentication.RefreshTokenRequest;
 import com.hotelmanagement.dto.response.ApiResponse;
 import com.hotelmanagement.dto.response.Authentication.AuthenticationResponse;
 import com.hotelmanagement.dto.response.Authentication.IntrospectResponse;
 import com.hotelmanagement.service.AuthenticationService;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -26,6 +24,13 @@ import java.text.ParseException;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AuthenticationController {
     AuthenticationService authenticationService;
+    @PostMapping("register")
+    ApiResponse<String> register(@RequestBody @Valid RegisterRequest request){
+        ApiResponse<String> apiResponse = new ApiResponse<>();
+        apiResponse.setResult(authenticationService.register(request));
+        return apiResponse;
+
+    }
     @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE)
     ApiResponse<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request){
         var result = authenticationService.authenticate(request);

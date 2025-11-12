@@ -23,13 +23,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping()
-    ApiResponse<String> register(@RequestBody @Valid RegisterRequest request){
-        ApiResponse<String> apiResponse = new ApiResponse<>();
-        apiResponse.setResult(userService.register(request));
-        return apiResponse;
 
-    }
 
 
 }

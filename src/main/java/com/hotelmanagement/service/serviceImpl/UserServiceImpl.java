@@ -17,6 +17,7 @@ import com.hotelmanagement.repository.RoleRepository;
 import com.hotelmanagement.repository.UserRepository;
 import com.hotelmanagement.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,8 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
@@ -35,47 +38,14 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private AccountRepository accountRepository;
-    @Override
-    public String register(RegisterRequest request){
-        if(accountRepository.existsByUsername(request.getUsername()))
-            throw new AppException(ErrorCode.USER_IS_EXISTED);
+    @Autowired
+    private UserMapper userMapper;
 
-        User user = User.builder()
-                .userType("CUSTOMER")
-                .firstName(request.getFirstName())
-                .lastName(request.getLastName())
-                .email(request.getEmail())
-                .phoneNumber(request.getPhoneNumber())
-                .status(true)
-                .createdTime(LocalDateTime.now())
-                .createdBy(null)
-                .modifiedTime(null)
-                .modifiedBy(null)
-                .deleted(false)
-                .deletedTime(null)
-                .deletedBy(null)
-                .build();
-        userRepository.save(user);
-        Roles customerRole = roleRepository.findByName(Role.CUSTOMER);
-        Set<Roles> roles = new HashSet<>();
-        roles.add(customerRole);
-        Accounts accounts = Accounts.builder()
-                .username(request.getUsername())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .status(true)
-                .userId(user.getId())
-                .roles(roles)
-                .createdTime(LocalDateTime.now())
-                .createdBy(null)
-                .modifiedTime(null)
-                .modifiedBy(null)
-                .deleted(false)
-                .deletedTime(null)
-                .deletedBy(null)
-                .build();
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<UserResponse> getAllUser(){
 
-        accountRepository.save(accounts);
-        return "Dang ki thanh cong";
+        return userRepository.findAll().stream().map(userMapper::toUserResponse).collect(Collectors.toList());
     }
+
 
 }

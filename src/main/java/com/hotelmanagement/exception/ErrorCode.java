@@ -21,7 +21,11 @@ public enum ErrorCode {
 
     //Authen
     UNAUTHENTICATED(1101,"Unauthenticated",HttpStatus.UNAUTHORIZED),
-    UNAUTHORIZED(1102,"You do not have permission",HttpStatus.FORBIDDEN)
+    UNAUTHORIZED(1102,"You do not have permission",HttpStatus.FORBIDDEN),
+
+    //register
+    USERNAME_NOT_NULL(1201,"Username is empty", HttpStatus.BAD_REQUEST),
+    PASSWORD_NOT_NULL(1202,"Password is empty", HttpStatus.BAD_REQUEST)
     ;
 
 
