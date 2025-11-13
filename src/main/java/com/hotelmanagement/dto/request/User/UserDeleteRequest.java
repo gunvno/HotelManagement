@@ -8,10 +8,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserUpdateRequest {
+public class UserDeleteRequest {
     String id;
-    String firstName;
-    String lastName;
-    String email;
-    String phoneNumber;
 }
+

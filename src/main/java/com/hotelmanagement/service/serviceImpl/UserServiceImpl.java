@@ -3,6 +3,8 @@ package com.hotelmanagement.service.serviceImpl;
 import com.hotelmanagement.dto.request.Account.AccountCreationRequest;
 import com.hotelmanagement.dto.request.Authentication.RegisterRequest;
 import com.hotelmanagement.dto.request.User.UserCreationRequest;
+import com.hotelmanagement.dto.request.User.UserDeleteRequest;
+import com.hotelmanagement.dto.request.User.UserGetByIdRequest;
 import com.hotelmanagement.dto.request.User.UserUpdateRequest;
 import com.hotelmanagement.dto.response.User.UserResponse;
 import com.hotelmanagement.entity.Accounts;
@@ -25,6 +27,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -46,6 +49,29 @@ public class UserServiceImpl implements UserService {
 
         return userRepository.findAll().stream().map(userMapper::toUserResponse).collect(Collectors.toList());
     }
+    @PreAuthorize("hasRole('ADMIN')")
+    public UserResponse updateUser(UserUpdateRequest request){
+        User user = userRepository.findById(request.getId()).orElseThrow(()->new AppException(ErrorCode.USER_NOT_FOUND));
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());
+        user.setEmail(request.getEmail());
+        user.setPhoneNumber(request.getPhoneNumber());
+        return userMapper.toUserResponse(userRepository.save(user));
+    }
+    @PreAuthorize("hasRole('ADMIN')")
+    public String deleteUser(UserDeleteRequest request){
+        User user = userRepository.findById(request.getId()).orElseThrow(()->new AppException(ErrorCode.USER_NOT_FOUND));
+        user.setDeleted(true);
+        userMapper.toUserResponse(userRepository.save(user));
+        return "xoa thanh cong";
+    }
+    @PreAuthorize("hasRole('ADMIN')")
+    public UserResponse getUserById(UserGetByIdRequest request){
+        User user = userRepository.findById(request.getId()).orElseThrow(()->new AppException(ErrorCode.USER_NOT_FOUND));
+        return userMapper.toUserResponse(user);
+    }
+
+
 
 
 }
