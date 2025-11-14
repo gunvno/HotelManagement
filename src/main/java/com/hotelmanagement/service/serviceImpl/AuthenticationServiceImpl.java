@@ -84,7 +84,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .deletedBy(null)
                 .build();
         userRepository.save(user);
-        Roles customerRole = roleRepository.findByName(Role.CUSTOMER);
+        Roles customerRole = roleRepository.findByName("CUSTOMER");
         Set<Roles> roles = new HashSet<>();
         roles.add(customerRole);
         Accounts accounts = Accounts.builder()
@@ -233,7 +233,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 stringJoiner.add("ROLE_" + roles.getName());
                 if(!CollectionUtils.isEmpty(roles.getPermissions()))
                     roles.getPermissions().forEach(permission -> {
-                        stringJoiner.add(permission.getModule());
+                        stringJoiner.add(permission.getName());
                     });
             });
 

@@ -1,10 +1,6 @@
-package com.hotelmanagement.dto.response.Role;
+package com.hotelmanagement.dto.response.Permission;
 
-import com.hotelmanagement.entity.Permissions;
-import com.hotelmanagement.enums.Role;
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import com.hotelmanagement.entity.Roles;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -16,12 +12,9 @@ import java.util.Set;
 @AllArgsConstructor
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class RoleResponse {
-    String id;
+public class PermissionsResponse {
     String name;
-    String roleCode;
-    Boolean status;
-    Set<Permissions> permissions;
+    String description;
     LocalDateTime createdTime;
     String createdBy;
     LocalDateTime modifiedTime;
@@ -29,4 +22,5 @@ public class RoleResponse {
     Boolean deleted = false;
     LocalDateTime deletedTime;
     String deletedBy;
+    Set<Roles> roles;
 }

@@ -1,9 +1,7 @@
 package com.hotelmanagement.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
@@ -13,16 +11,17 @@ import java.util.Set;
 @Table(name = "permissions")
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Permissions {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
-    @Column(name = "module")
-    String module;
-    @Column(name = "action")
-    String action;
+    @Column(name = "name")
+    String name;
     @Column(name = "description")
     String description;
 
@@ -46,6 +45,4 @@ public class Permissions {
 
     @Column(name = "deleted_by", length = 100)
     String deletedBy;
-    @ManyToMany(fetch = FetchType.EAGER)
-    Set<Roles> roles;
 }

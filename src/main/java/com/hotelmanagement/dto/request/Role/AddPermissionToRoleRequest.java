@@ -1,4 +1,4 @@
-package com.hotelmanagement.dto.request.Permission;
+package com.hotelmanagement.dto.request.Role;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -8,7 +8,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class PermissionCreationRequest {
-    String name;
-    String description;
+public class AddPermissionToRoleRequest {
+    String roleName;
+    String permissionName;
 }

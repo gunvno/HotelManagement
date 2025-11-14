@@ -22,8 +22,7 @@ public class Roles {
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
     @Column(name = "name")
-    @Enumerated(EnumType.STRING)
-    Role name;
+    String name;
     @Column(name = "role_code")
     String roleCode;
     @Column(name = "status")

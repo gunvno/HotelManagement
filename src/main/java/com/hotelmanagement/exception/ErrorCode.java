@@ -25,7 +25,10 @@ public enum ErrorCode {
 
     //register
     USERNAME_NOT_NULL(1201,"Username is empty", HttpStatus.BAD_REQUEST),
-    PASSWORD_NOT_NULL(1202,"Password is empty", HttpStatus.BAD_REQUEST)
+    PASSWORD_NOT_NULL(1202,"Password is empty", HttpStatus.BAD_REQUEST),
+
+    //Permission
+    PERMISSION_IS_EXISTED(1301,"Permission is existed",HttpStatus.BAD_REQUEST)
     ;
 
 

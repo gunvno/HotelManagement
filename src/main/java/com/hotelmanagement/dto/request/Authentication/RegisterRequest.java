@@ -17,18 +17,9 @@ public class RegisterRequest {
     String username;
     @NotNull(message = "PASSWORD_NOT_NULL")
     String password;
-    String userId;
     String firstName;
     String lastName;
     String email;
     String phoneNumber;
-    String userType;
-    Set<Roles> roles;
-    LocalDateTime createdTime;
-    String createdBy;
-    LocalDateTime modifiedTime;
-    String modifiedBy;
-    Boolean deleted = false;
-    LocalDateTime deletedTime;
-    String deletedBy;
+
 }

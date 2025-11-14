@@ -32,12 +32,11 @@ public class ApplicationInitConfig {
     public ApplicationRunner applicationRunner(AccountRepository accountRepository, PasswordEncoder passwordEncoder,
                                                UserRepository userRepository, RoleRepository roleRepository) {
         return args -> {
-            Roles adminRole = roleRepository.findByName(Role.ADMIN);
-            Roles customerRole = roleRepository.findByName(Role.CUSTOMER);
+            Roles customerRole = roleRepository.findByName("CUSTOMER");
 
             if(customerRole == null){
                 Roles roles = Roles.builder()
-                        .name(Role.CUSTOMER)
+                        .name("CUSTOMER")
                         .roleCode("abc")
                         .status(true)
                         .createdTime(LocalDateTime.now())
@@ -66,7 +65,7 @@ public class ApplicationInitConfig {
                 // 3️⃣ Gán role admin
                 Set<Roles> adminRoles = new HashSet<>();
                 Roles roles = Roles.builder()
-                        .name(Role.ADMIN)
+                        .name("ADMIN")
                         .roleCode("def")
                         .status(true)
                         .createdTime(LocalDateTime.now())
