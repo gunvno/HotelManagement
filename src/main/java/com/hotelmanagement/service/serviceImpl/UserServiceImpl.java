@@ -36,12 +36,15 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
 
-    @PreAuthorize("hasRole('ADMIN')")
-    public List<UserResponse> getAllUser(){
-
-        return userRepository.findAll().stream().map(userMapper::toUserResponse).collect(Collectors.toList());
+    @PreAuthorize("hasAuthority('GET_ALL_USER')")
+    public List<UserResponse> getAllUser() {
+        return userRepository.findAll().stream()
+                .filter(user -> !user.getDeleted())
+                .map(userMapper::toUserResponse)
+                .collect(Collectors.toList());
     }
-    @PreAuthorize("hasRole('ADMIN')")
+
+    @PreAuthorize("hasAuthority('UPDATE_USER')")
     public UserResponse updateUser(UserUpdateRequest request){
         User user = userRepository.findById(request.getId()).orElseThrow(()->new AppException(ErrorCode.USER_NOT_FOUND));
         user.setFirstName(request.getFirstName());
@@ -53,9 +56,29 @@ public class UserServiceImpl implements UserService {
     @PreAuthorize("hasRole('ADMIN')")
     public String deleteUser(UserDeleteRequest request){
         User user = userRepository.findById(request.getId()).orElseThrow(()->new AppException(ErrorCode.USER_NOT_FOUND));
+        if(user.getDeleted())
+            throw new AppException(ErrorCode.USER_NOT_FOUND);
         user.setDeleted(true);
         userMapper.toUserResponse(userRepository.save(user));
         return "xoa thanh cong";
+    }
+    @PreAuthorize("hasRole('ADMIN')")
+    public String unActiveUser(UserDeleteRequest request){
+        User user = userRepository.findById(request.getId()).orElseThrow(()->new AppException(ErrorCode.USER_NOT_FOUND));
+        if(!user.getStatus())
+            throw new AppException(ErrorCode.USER_ALREADY_UNACTIVE);
+        user.setStatus(false);
+        userMapper.toUserResponse(userRepository.save(user));
+        return "UnActive thanh cong";
+    }
+    @PreAuthorize("hasRole('ADMIN')")
+    public String activeUser(UserDeleteRequest request){
+        User user = userRepository.findById(request.getId()).orElseThrow(()->new AppException(ErrorCode.USER_NOT_FOUND));
+        if(user.getStatus())
+            throw new AppException(ErrorCode.USER_ALREADY_ACTIVE);
+        user.setStatus(true);
+        userMapper.toUserResponse(userRepository.save(user));
+        return "UnActive thanh cong";
     }
     @PostAuthorize("returnObject.username == authentication.name")
     public UserResponse getUserById(UserGetByIdRequest request){

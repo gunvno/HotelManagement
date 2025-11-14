@@ -18,8 +18,6 @@ public class RoleServiceImpl implements RoleService {
     private PermissionRepository permissionRepository;
     @PreAuthorize("hasRole('ADMIN')")
     public String addPermissionToRole(AddPermissionToRoleRequest request) {
-
-
         Roles role = rolesRepository.findByName(request.getRoleName());
         if(role != null){
             var permission = permissionRepository.findByName(request.getPermissionName());

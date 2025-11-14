@@ -130,7 +130,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         // SỬA Ở ĐÂY
         boolean authenticated = passwordEncoder.matches(request.getPassword(), accounts.getPassword());
 
-        if (!authenticated) {
+        if (!authenticated || !accounts.getStatus() || accounts.getDeleted()) {
             throw new AppException(ErrorCode.UNAUTHENTICATED);
         }
 

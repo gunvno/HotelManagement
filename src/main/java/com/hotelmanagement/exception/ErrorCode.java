@@ -18,6 +18,8 @@ public enum ErrorCode {
     PASSWORD_INVALID(1003,"Mật khẩu phải ít nhất {min} kí tự", HttpStatus.BAD_REQUEST),
     USER_NOT_FOUND(1004, "Người dùng không tồn tại", HttpStatus.NOT_FOUND),
     DOB_INVALID(1005,"Your age must be at least {min} ",HttpStatus.BAD_REQUEST),
+    USER_ALREADY_UNACTIVE(1006,"User is already unactive",HttpStatus.BAD_REQUEST),
+    USER_ALREADY_ACTIVE(1007,"User is already active",HttpStatus.BAD_REQUEST),
 
     //Authen
     UNAUTHENTICATED(1101,"Unauthenticated",HttpStatus.UNAUTHORIZED),

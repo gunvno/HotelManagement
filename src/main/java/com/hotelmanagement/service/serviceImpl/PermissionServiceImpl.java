@@ -42,13 +42,16 @@ public class PermissionServiceImpl implements PermissionService {
                 .deletedTime(null)
                 .deletedBy(null)
                 .build();
-
         permissionRepository.save(permissions);
         return "Them permission thanh cong";
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @Override
     public List<PermissionsResponse> getAll() {
-        return List.of();
+        return permissionRepository.findAll().stream()
+                .filter(permissions -> !permissions.getDeleted())
+                .map(permissionMapper::toPermissionResponse)
+                .toList();
     }
+
 }

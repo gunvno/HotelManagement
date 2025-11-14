@@ -48,6 +48,22 @@ public class UserController {
                 .result(userService.deleteUser(request))
                 .build();
     }
+    @PostMapping("/unActive")
+    ApiResponse<String> unActiveUser(@RequestBody @Valid UserDeleteRequest request){
+        return ApiResponse.<String>builder()
+                .code(1000)
+                .success("true")
+                .result(userService.unActiveUser(request))
+                .build();
+    }
+    @PostMapping("/active")
+    ApiResponse<String> activeUser(@RequestBody @Valid UserDeleteRequest request){
+        return ApiResponse.<String>builder()
+                .code(1000)
+                .success("true")
+                .result(userService.activeUser(request))
+                .build();
+    }
     @GetMapping("/getById")
     ApiResponse<UserResponse> getUserById(@RequestBody @Valid UserGetByIdRequest request){
         return ApiResponse.<UserResponse>builder()

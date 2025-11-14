@@ -16,4 +16,6 @@ public interface UserService {
     public String deleteUser(UserDeleteRequest request);
     public UserResponse getUserById(UserGetByIdRequest request);
     public UserResponse getMyInfo();
+    public String unActiveUser(UserDeleteRequest request);
+    public String activeUser(UserDeleteRequest request);
 }
