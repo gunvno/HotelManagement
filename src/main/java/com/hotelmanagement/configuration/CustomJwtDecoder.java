@@ -1,8 +1,7 @@
 package com.hotelmanagement.configuration;
 
-import com.nimbusds.jose.JOSEException;
 import com.hotelmanagement.dto.request.Authentication.IntrospectRequest;
-import com.hotelmanagement.service.AuthenticationService;
+import com.hotelmanagement.service.interfaces.IAuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
@@ -13,7 +12,6 @@ import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.spec.SecretKeySpec;
-import java.text.ParseException;
 import java.util.Objects;
 
 @Component
@@ -22,7 +20,7 @@ public class CustomJwtDecoder implements JwtDecoder {
     private String signerKey;
 
     @Autowired
-    private AuthenticationService authenticationService;
+    private IAuthenticationService IAuthenticationService;
 
     private NimbusJwtDecoder nimbusJwtDecoder = null;
 
@@ -30,7 +28,7 @@ public class CustomJwtDecoder implements JwtDecoder {
     @Override
     public Jwt decode(String token) throws JwtException {
         try{
-            var response = authenticationService.introspect(IntrospectRequest.builder()
+            var response = IAuthenticationService.introspect(IntrospectRequest.builder()
                     .token(token)
                     .build());
             if(!response.isValid()) throw new JwtException("Token invalid");

@@ -4,7 +4,9 @@ import com.hotelmanagement.dto.request.Authentication.*;
 import com.hotelmanagement.entity.Accounts;
 import com.hotelmanagement.entity.Roles;
 import com.hotelmanagement.entity.User;
+import com.hotelmanagement.enums.AccountStatus;
 import com.hotelmanagement.enums.Role;
+import com.hotelmanagement.enums.UserStatus;
 import com.hotelmanagement.repository.AccountRepository;
 import com.hotelmanagement.repository.RoleRepository;
 import com.hotelmanagement.repository.UserRepository;
@@ -19,7 +21,7 @@ import com.hotelmanagement.entity.InvalidatedToken;
 import com.hotelmanagement.exception.AppException;
 import com.hotelmanagement.exception.ErrorCode;
 import com.hotelmanagement.repository.InvalidatedTokenRepository;
-import com.hotelmanagement.service.AuthenticationService;
+import com.hotelmanagement.service.interfaces.IAuthenticationService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -43,7 +45,7 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class AuthenticationServiceImpl implements AuthenticationService {
+public class AuthenticationServiceImpl implements IAuthenticationService {
     InvalidatedTokenRepository invalidatedTokenRepository;
     AccountRepository accountRepository;
     @NonFinal
@@ -74,7 +76,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .lastName(request.getLastName())
                 .email(request.getEmail())
                 .phoneNumber(request.getPhoneNumber())
-                .status(true)
+                .status(UserStatus.ACTIVE)
                 .createdTime(LocalDateTime.now())
                 .createdBy(null)
                 .modifiedTime(null)
@@ -84,13 +86,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .deletedBy(null)
                 .build();
         userRepository.save(user);
-        Roles customerRole = roleRepository.findByName("CUSTOMER");
+        Roles customerRole = roleRepository.findByName(Role.CUSTOMER);
         Set<Roles> roles = new HashSet<>();
         roles.add(customerRole);
         Accounts accounts = Accounts.builder()
                 .username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .status(true)
+                .status(AccountStatus.ACTIVE)
                 .userId(user.getId())
                 .roles(roles)
                 .createdTime(LocalDateTime.now())
@@ -130,7 +132,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         // SỬA Ở ĐÂY
         boolean authenticated = passwordEncoder.matches(request.getPassword(), accounts.getPassword());
 
-        if (!authenticated || !accounts.getStatus() || accounts.getDeleted()) {
+        if (!authenticated  || accounts.getDeleted()) {
             throw new AppException(ErrorCode.UNAUTHENTICATED);
         }
 

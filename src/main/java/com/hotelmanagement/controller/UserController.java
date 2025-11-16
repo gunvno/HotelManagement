@@ -1,19 +1,15 @@
 package com.hotelmanagement.controller;
 
-import com.hotelmanagement.dto.request.Authentication.RegisterRequest;
-import com.hotelmanagement.dto.request.User.UserCreationRequest;
 import com.hotelmanagement.dto.request.User.UserDeleteRequest;
 import com.hotelmanagement.dto.request.User.UserGetByIdRequest;
 import com.hotelmanagement.dto.request.User.UserUpdateRequest;
 import com.hotelmanagement.dto.response.ApiResponse;
 import com.hotelmanagement.dto.response.User.UserResponse;
-import com.hotelmanagement.entity.User;
-import com.hotelmanagement.service.UserService;
+import com.hotelmanagement.service.interfaces.IUserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,13 +19,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
     @Autowired
-    private UserService userService;
+    private IUserService IUserService;
     @GetMapping("/getAll")
     ApiResponse<List<UserResponse>> getAll(){
           return  ApiResponse.<List<UserResponse>>builder()
                 .code(1000)
                 .success("true")
-                .result(userService.getAllUser())
+                .result(IUserService.getAllUser())
                 .build();
     }
     @PostMapping("/update")
@@ -37,7 +33,7 @@ public class UserController {
         return  ApiResponse.<UserResponse>builder()
                 .code(1000)
                 .success("true")
-                .result(userService.updateUser( request))
+                .result(IUserService.updateUser( request))
                 .build();
     }
     @PostMapping("/delete")
@@ -45,7 +41,7 @@ public class UserController {
         return ApiResponse.<String>builder()
                 .code(1000)
                 .success("true")
-                .result(userService.deleteUser(request))
+                .result(IUserService.deleteUser(request))
                 .build();
     }
     @PostMapping("/unActive")
@@ -53,7 +49,7 @@ public class UserController {
         return ApiResponse.<String>builder()
                 .code(1000)
                 .success("true")
-                .result(userService.unActiveUser(request))
+                .result(IUserService.unActiveUser(request))
                 .build();
     }
     @PostMapping("/active")
@@ -61,7 +57,7 @@ public class UserController {
         return ApiResponse.<String>builder()
                 .code(1000)
                 .success("true")
-                .result(userService.activeUser(request))
+                .result(IUserService.activeUser(request))
                 .build();
     }
     @GetMapping("/getById")
@@ -69,12 +65,12 @@ public class UserController {
         return ApiResponse.<UserResponse>builder()
                 .code(1000)
                 .success("true")
-                .result(userService.getUserById(request))
+                .result(IUserService.getUserById(request))
                 .build();
     }
     @GetMapping("/getMyInfo")
     ApiResponse<UserResponse> getMyInfo() {
-        UserResponse user = userService.getMyInfo();
+        UserResponse user = IUserService.getMyInfo();
         return ApiResponse.<UserResponse>builder()
                 .code(1000)
                 .success("true")

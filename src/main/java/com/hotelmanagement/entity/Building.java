@@ -1,5 +1,6 @@
 package com.hotelmanagement.entity;
 
+import com.hotelmanagement.enums.BuildingStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -23,9 +24,9 @@ public class Building {
     @Column(name = "name", nullable = false)
     String name;
 
-
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    Boolean status = true;
+    BuildingStatus status;
 
     @Column(name = "created_time")
     LocalDateTime createdTime;

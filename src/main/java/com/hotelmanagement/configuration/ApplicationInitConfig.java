@@ -3,7 +3,9 @@ package com.hotelmanagement.configuration;
 import com.hotelmanagement.entity.Accounts;
 import com.hotelmanagement.entity.Roles;
 import com.hotelmanagement.entity.User;
+import com.hotelmanagement.enums.AccountStatus;
 import com.hotelmanagement.enums.Role;
+import com.hotelmanagement.enums.UserStatus;
 import com.hotelmanagement.repository.AccountRepository;
 import com.hotelmanagement.repository.RoleRepository;
 import com.hotelmanagement.repository.UserRepository;
@@ -32,13 +34,11 @@ public class ApplicationInitConfig {
     public ApplicationRunner applicationRunner(AccountRepository accountRepository, PasswordEncoder passwordEncoder,
                                                UserRepository userRepository, RoleRepository roleRepository) {
         return args -> {
-            Roles customerRole = roleRepository.findByName("CUSTOMER");
+            Roles customerRole = roleRepository.findByName(Role.CUSTOMER);
 
             if(customerRole == null){
                 Roles roles = Roles.builder()
-                        .name("CUSTOMER")
-                        .roleCode("abc")
-                        .status(true)
+                        .name(Role.CUSTOMER)
                         .createdTime(LocalDateTime.now())
                         .createdBy(null)
                         .modifiedTime(null)
@@ -56,7 +56,7 @@ public class ApplicationInitConfig {
                         .userType("ADMIN")
                         .firstName("System")
                         .lastName("Administrator")
-                        .status(true)
+                        .status(UserStatus.ACTIVE)
                         .createdTime(LocalDateTime.now())
                         .deleted(false)
                         .build();
@@ -65,10 +65,7 @@ public class ApplicationInitConfig {
                 // 3️⃣ Gán role admin
                 Set<Roles> adminRoles = new HashSet<>();
                 Roles roles = Roles.builder()
-                        .name("ADMIN")
-                        .roleCode("def")
-                        .status(true)
-                        .createdTime(LocalDateTime.now())
+                        .name(Role.ADMIN).createdTime(LocalDateTime.now())
                         .createdBy(null)
                         .modifiedTime(null)
                         .modifiedBy(null)
@@ -83,7 +80,7 @@ public class ApplicationInitConfig {
                         .password(passwordEncoder.encode("admin"))
                         .roles(adminRoles)
                         .userId(user.getId())
-                        .status(true)
+                        .status(AccountStatus.ACTIVE)
                         .createdTime(LocalDateTime.now())
                         .deleted(false)
                         .build();

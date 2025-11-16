@@ -24,7 +24,7 @@ public class AmenityRooms {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_type_id")
-    RoomTypes room_types;
+    RoomTypes roomTypes;
 
     @Column(name = "amount")
     float amount;

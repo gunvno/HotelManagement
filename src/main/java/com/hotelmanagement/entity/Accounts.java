@@ -1,5 +1,6 @@
 package com.hotelmanagement.entity;
 
+import com.hotelmanagement.enums.AccountStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -26,8 +27,10 @@ public class Accounts {
     @Column(name = "password", nullable = false, length = 255)
     String password;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    Boolean status = true;
+    AccountStatus status;
+
 
     @Column(name = "user_id", nullable = false)
     String userId;

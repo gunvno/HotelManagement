@@ -20,8 +20,10 @@ public class Images {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
-
+    @Column(name = "obj_id")
     String objId;
+    @Column(name = "url")
     String Url;
+    @Column(name = "created_time")
     LocalDateTime createdTime;
 }

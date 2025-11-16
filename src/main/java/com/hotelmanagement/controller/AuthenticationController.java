@@ -5,7 +5,7 @@ import com.nimbusds.jose.JOSEException;
 import com.hotelmanagement.dto.response.ApiResponse;
 import com.hotelmanagement.dto.response.Authentication.AuthenticationResponse;
 import com.hotelmanagement.dto.response.Authentication.IntrospectResponse;
-import com.hotelmanagement.service.AuthenticationService;
+import com.hotelmanagement.service.interfaces.IAuthenticationService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -23,17 +23,17 @@ import java.text.ParseException;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AuthenticationController {
-    AuthenticationService authenticationService;
+    IAuthenticationService IAuthenticationService;
     @PostMapping("register")
     ApiResponse<String> register(@RequestBody @Valid RegisterRequest request){
         ApiResponse<String> apiResponse = new ApiResponse<>();
-        apiResponse.setResult(authenticationService.register(request));
+        apiResponse.setResult(IAuthenticationService.register(request));
         return apiResponse;
 
     }
     @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE)
     ApiResponse<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request){
-        var result = authenticationService.authenticate(request);
+        var result = IAuthenticationService.authenticate(request);
         return ApiResponse.<AuthenticationResponse>builder()
                 .result(result)
                 .build();
@@ -42,7 +42,7 @@ public class AuthenticationController {
     @PostMapping(value = "/introspect", consumes = MediaType.APPLICATION_JSON_VALUE)
     ApiResponse<IntrospectResponse> authenticate(@RequestBody IntrospectRequest request){
         try {
-            var result = authenticationService.introspect(request);
+            var result = IAuthenticationService.introspect(request);
             return ApiResponse.<IntrospectResponse>builder()
                     .result(result)
                     .build();
@@ -55,7 +55,7 @@ public class AuthenticationController {
     @PostMapping(value = "/logout", consumes = MediaType.APPLICATION_JSON_VALUE)
     ApiResponse<Void> logout(@RequestBody LogoutRequest request) throws ParseException, JOSEException {
 
-        authenticationService.logout(request);
+        IAuthenticationService.logout(request);
         return ApiResponse.<Void>builder()
                 .success("true")
                 .build();
@@ -63,7 +63,7 @@ public class AuthenticationController {
     }
     @PostMapping(value = "/refresh", consumes = MediaType.APPLICATION_JSON_VALUE)
     ApiResponse<AuthenticationResponse> authenticate(@RequestBody RefreshTokenRequest request) throws ParseException, JOSEException {
-        var result = authenticationService.refreshToken(request);
+        var result = IAuthenticationService.refreshToken(request);
         return ApiResponse.<AuthenticationResponse>builder()
                 .result(result)
                 .build();

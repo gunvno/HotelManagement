@@ -8,7 +8,7 @@ import com.hotelmanagement.exception.ErrorCode;
 import com.hotelmanagement.mapper.PermissionMapper;
 import com.hotelmanagement.repository.PermissionRepository;
 import com.hotelmanagement.repository.RoleRepository;
-import com.hotelmanagement.service.PermissionService;
+import com.hotelmanagement.service.interfaces.IPermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-public class PermissionServiceImpl implements PermissionService {
+public class PermissionServiceImpl implements IPermissionService {
 
     @Autowired
     private PermissionRepository permissionRepository;

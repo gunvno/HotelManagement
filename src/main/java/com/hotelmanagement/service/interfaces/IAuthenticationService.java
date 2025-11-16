@@ -1,4 +1,4 @@
-package com.hotelmanagement.service;
+package com.hotelmanagement.service.interfaces;
 
 import com.hotelmanagement.dto.request.Authentication.*;
 import com.hotelmanagement.dto.response.Authentication.AuthenticationResponse;
@@ -7,7 +7,7 @@ import com.nimbusds.jose.JOSEException;
 
 import java.text.ParseException;
 
-public interface AuthenticationService {
+public interface IAuthenticationService {
     AuthenticationResponse authenticate(AuthenticationRequest request);
     public IntrospectResponse introspect(IntrospectRequest request) throws Exception;
     public void logout(LogoutRequest request) throws ParseException, JOSEException;

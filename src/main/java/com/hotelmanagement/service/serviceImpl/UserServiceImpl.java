@@ -6,13 +6,14 @@ import com.hotelmanagement.dto.request.User.UserUpdateRequest;
 import com.hotelmanagement.dto.response.User.UserResponse;
 import com.hotelmanagement.entity.Accounts;
 import com.hotelmanagement.entity.User;
+import com.hotelmanagement.enums.UserStatus;
 import com.hotelmanagement.exception.AppException;
 import com.hotelmanagement.exception.ErrorCode;
 import com.hotelmanagement.mapper.UserMapper;
 import com.hotelmanagement.repository.AccountRepository;
 import com.hotelmanagement.repository.RoleRepository;
 import com.hotelmanagement.repository.UserRepository;
-import com.hotelmanagement.service.UserService;
+import com.hotelmanagement.service.interfaces.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,7 +25,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements IUserService {
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -65,18 +66,18 @@ public class UserServiceImpl implements UserService {
     @PreAuthorize("hasRole('ADMIN')")
     public String unActiveUser(UserDeleteRequest request){
         User user = userRepository.findById(request.getId()).orElseThrow(()->new AppException(ErrorCode.USER_NOT_FOUND));
-        if(!user.getStatus())
+        if(user.getStatus().equals(UserStatus.UNACTIVE))
             throw new AppException(ErrorCode.USER_ALREADY_UNACTIVE);
-        user.setStatus(false);
+        user.setStatus(UserStatus.UNACTIVE);
         userMapper.toUserResponse(userRepository.save(user));
         return "UnActive thanh cong";
     }
     @PreAuthorize("hasRole('ADMIN')")
     public String activeUser(UserDeleteRequest request){
         User user = userRepository.findById(request.getId()).orElseThrow(()->new AppException(ErrorCode.USER_NOT_FOUND));
-        if(user.getStatus())
+        if(user.getStatus().equals(UserStatus.ACTIVE))
             throw new AppException(ErrorCode.USER_ALREADY_ACTIVE);
-        user.setStatus(true);
+        user.setStatus(UserStatus.ACTIVE);
         userMapper.toUserResponse(userRepository.save(user));
         return "UnActive thanh cong";
     }

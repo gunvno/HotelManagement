@@ -1,16 +1,13 @@
-package com.hotelmanagement.service;
+package com.hotelmanagement.service.interfaces;
 
-import com.hotelmanagement.dto.request.Authentication.RegisterRequest;
-import com.hotelmanagement.dto.request.User.UserCreationRequest;
 import com.hotelmanagement.dto.request.User.UserDeleteRequest;
 import com.hotelmanagement.dto.request.User.UserGetByIdRequest;
 import com.hotelmanagement.dto.request.User.UserUpdateRequest;
 import com.hotelmanagement.dto.response.User.UserResponse;
-import com.hotelmanagement.entity.User;
 
 import java.util.List;
 
-public interface UserService {
+public interface IUserService {
     public List<UserResponse> getAllUser();
     public UserResponse updateUser(UserUpdateRequest request);
     public String deleteUser(UserDeleteRequest request);

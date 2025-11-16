@@ -1,10 +1,6 @@
 package com.hotelmanagement.dto.response.Role;
 
 import com.hotelmanagement.entity.Permissions;
-import com.hotelmanagement.enums.Role;
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 

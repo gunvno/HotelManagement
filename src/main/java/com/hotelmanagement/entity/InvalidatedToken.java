@@ -1,10 +1,7 @@
 package com.hotelmanagement.entity;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -19,8 +16,8 @@ import java.util.Date;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class InvalidatedToken {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     String id;
+    @Column(name = "expiry_time", nullable = false)
     Date expiryTime;
 }
 

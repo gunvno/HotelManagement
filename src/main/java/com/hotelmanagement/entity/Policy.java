@@ -20,31 +20,31 @@ public class Policy {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
-
-    String username;
-    String passwordHash;
-    Boolean status;
-
-    @Column(name = "user_id")
-    String userId;
-    
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName = "id", insertable = false, updatable = false)
-    User user;
-    
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-        name = "policy_roles",
-        joinColumns = @JoinColumn(name = "policy_id"),
-        inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
-    Set<Roles> roles;
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "post_type_id", nullable = false)
+    PolicyTypes policyTypes;
+    @Column(name = "title")
+    String title;
+    @Column(name = "content", columnDefinition = "TEXT")
+    String content;
+    @Column(name = "created_time")
     LocalDateTime createdTime;
+
+    @Column(name = "created_by", length = 100)
     String createdBy;
+
+    @Column(name = "modified_time")
     LocalDateTime modifiedTime;
+
+    @Column(name = "modified_by", length = 100)
     String modifiedBy;
-    Boolean deleted;
+
+    @Column(name = "deleted")
+    Boolean deleted = false;
+
+    @Column(name = "deleted_time")
     LocalDateTime deletedTime;
+
+    @Column(name = "deleted_by", length = 100)
     String deletedBy;
 }

@@ -21,12 +21,9 @@ public class Roles {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
+    @Enumerated(EnumType.STRING)
     @Column(name = "name")
-    String name;
-    @Column(name = "role_code")
-    String roleCode;
-    @Column(name = "status")
-    Boolean status;
+    Role name;
 
     @Column(name = "created_time")
     LocalDateTime createdTime;

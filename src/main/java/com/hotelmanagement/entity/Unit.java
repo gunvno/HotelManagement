@@ -20,19 +20,10 @@ public class Unit {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
-
+    @Column(name = "name", nullable = false)
     String name;
+    @Column(name = "description")
     String description;
-    Boolean status;
-
-
-    LocalDateTime createdTime;
-    String createdBy;
-    LocalDateTime modifiedTime;
-    String modifiedBy;
-    Boolean deleted;
-    LocalDateTime deletedTime;
-    String deletedBy;
     @OneToMany(mappedBy = "unit", cascade = CascadeType.ALL, orphanRemoval = true)
     List<Services> services;
 }

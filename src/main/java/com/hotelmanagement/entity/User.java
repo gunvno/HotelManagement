@@ -1,10 +1,12 @@
 package com.hotelmanagement.entity;
 
+import com.hotelmanagement.enums.UserStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -31,9 +33,9 @@ public class User {
 
     @Column(name = "phone_number")
     String phoneNumber;
-
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    Boolean status;
+    UserStatus status;
 
     @Column(name = "user_type")
     String userType;
@@ -61,5 +63,7 @@ public class User {
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     ProfileExpands profileExpand;
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<RoomBookings> roomBookings;
 
 }
