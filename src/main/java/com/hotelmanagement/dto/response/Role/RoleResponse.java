@@ -22,7 +22,6 @@ public class RoleResponse {
     String createdBy;
     LocalDateTime modifiedTime;
     String modifiedBy;
-    Boolean deleted = false;
     LocalDateTime deletedTime;
     String deletedBy;
 }

@@ -1,5 +1,6 @@
 package com.hotelmanagement.dto.request.Account;
 
+import com.hotelmanagement.enums.AccountStatus;
 import com.hotelmanagement.exception.ErrorCode;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -19,7 +20,7 @@ public class AccountUpdateRequest
     String username;
     @Size(min = 8, message = "PASSWORD_INVALID")
     String password;
-    boolean status;
+    AccountStatus status;
 
     LocalDate dob;
 }

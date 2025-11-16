@@ -1,5 +1,6 @@
 package com.hotelmanagement.dto.response.User;
 
+import com.hotelmanagement.enums.UserStatus;
 import jakarta.persistence.Column;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -16,7 +17,7 @@ public class UserResponse {
     String lastName;
     String email;
     String phoneNumber;
-    Boolean status;
+    UserStatus status;
     String userType;
     LocalDateTime createdTime;
     String createdBy;

@@ -1,5 +1,6 @@
 package com.hotelmanagement.dto.request.User;
 
+import com.hotelmanagement.enums.UserStatus;
 import com.hotelmanagement.exception.ErrorCode;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.Size;
@@ -21,7 +22,7 @@ public class UserCreationRequest
     String lastName;
     String email;
     String phoneNumber;
-    Boolean status;
+    UserStatus status;
     String userType;
     LocalDateTime createdTime;
     String createdBy;

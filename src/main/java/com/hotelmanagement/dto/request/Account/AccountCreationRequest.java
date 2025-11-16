@@ -2,6 +2,7 @@ package com.hotelmanagement.dto.request.Account;
 
 import com.hotelmanagement.entity.Roles;
 import com.hotelmanagement.entity.User;
+import com.hotelmanagement.enums.AccountStatus;
 import com.hotelmanagement.exception.ErrorCode;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
@@ -21,7 +22,7 @@ public class AccountCreationRequest
 {
     String username;
     String password;
-    Boolean status = true;
+    AccountStatus status;
     String userId;
     Set<Roles> roles;
     LocalDateTime createdTime;

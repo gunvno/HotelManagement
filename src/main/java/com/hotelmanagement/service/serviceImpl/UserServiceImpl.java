@@ -86,6 +86,7 @@ public class UserServiceImpl implements IUserService {
         User user = userRepository.findById(request.getId()).orElseThrow(()->new AppException(ErrorCode.USER_NOT_FOUND));
         return userMapper.toUserResponse(user);
     }
+    @PreAuthorize("hasAuthority('GET_MY_INFO')")
     public UserResponse getMyInfo(){
         var context = SecurityContextHolder.getContext();
         String name = context.getAuthentication().getName();

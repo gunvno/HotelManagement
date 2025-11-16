@@ -19,7 +19,6 @@ public class PermissionsResponse {
     String createdBy;
     LocalDateTime modifiedTime;
     String modifiedBy;
-    Boolean deleted = false;
     LocalDateTime deletedTime;
     String deletedBy;
     Set<Roles> roles;
